@@ -39,7 +39,7 @@ public class Movement : MonoBehaviour
             canRotate = false;
             foreach (var b in buttons)
             {
-                b.interactable = true;
+                b.interactable = false;
             }
             anim.speed = Mathf.Lerp(anim.speed, 0, moveSpeed * Time.deltaTime);
             transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
@@ -88,14 +88,17 @@ public class Movement : MonoBehaviour
 
     public void Forward()
     {
-        if (transform.position == targetPosition)
+        if (canMove)
         {
-            if (canMove && CheckObstructions() == false)
+            if (transform.position == targetPosition)
             {
-                targetPosition = wallCheck.position;
+                if (canMove && CheckObstructions() == false)
+                {
+                    targetPosition = wallCheck.position;
 
-                anim.SetBool("isMoving", true);
-                anim.speed = 2;
+                    anim.SetBool("isMoving", true);
+                    anim.speed = 2;
+                }
             }
         }
     }
@@ -110,7 +113,7 @@ public class Movement : MonoBehaviour
 
     public void TurnRight()
     {
-        if (canRotate)
+        if (canRotate && canMove)
         {
             Quaternion lr = transform.rotation * Quaternion.Euler(0,90,0);
             targetRotation = lr;
@@ -120,7 +123,7 @@ public class Movement : MonoBehaviour
 
     public void TurnLeft()
     {
-        if (canRotate)
+        if (canRotate && canMove)
         {
             Quaternion lr = transform.rotation * Quaternion.Euler(0, -90, 0);
             targetRotation = lr;
