@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5113846177407358655}
   - component: {fileID: 6947755717754141412}
   - component: {fileID: 578152929093865696}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CornerBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

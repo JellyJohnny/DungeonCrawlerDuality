@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour
     public float checkDistance;
     public bool canMove;
     public bool canRotate;
-    Quaternion targetRotation;
+    public Quaternion targetRotation;
     Vector3 targetPosition;
     public float turnSpeed;
     public float moveSpeed;
@@ -19,71 +19,110 @@ public class Movement : MonoBehaviour
     public Transform wallCheck;
     public float distanceThreshold;
     public Button[] buttons;
+    Combat combat;
 
     private void Start()
     {
+        combat = GetComponent<Combat>();    
         targetRotation = transform.rotation;
         targetPosition = transform.position;
-        foreach (var b in buttons)
-        {
-            b.interactable = true;
-        }
+        UpdateButtons(true);
     }
     
     private void Update()
     {
-        float dist = Vector3.Distance(targetPosition, transform.position);
-        if(dist > distanceThreshold)
+        Move();
+    }
+
+    private void Move()
+    {
+        if (!combat.inCombat)
         {
-            canMove = false;
-            canRotate = false;
-            foreach (var b in buttons)
+            if (MoveTowards())
             {
-                b.interactable = false;
+                UpdateButtons(false);
+
+                anim.speed = Mathf.Lerp(anim.speed, 0, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             }
-            anim.speed = Mathf.Lerp(anim.speed, 0, moveSpeed * Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        }
-        else
-        {
-            canMove = true;
-            canRotate = true;
-            if(anim.GetBool("isMoving") != false)
+            else
             {
-                anim.SetBool("isMoving", false);
-               
+                canMove = true;
+                canRotate = true;
+                if (anim.GetBool("isMoving") != false)
+                {
+                    anim.SetBool("isMoving", false);
+
+                }
+                UpdateButtons(true);
+                transform.position = targetPosition;
             }
-            foreach (var b in buttons)
-            {
-                b.interactable = true;
-            }
-            transform.position = targetPosition;
+            //transform.position = targetPosition;
         }
 
-        if (transform.rotation != targetRotation)
-        {
-            canRotate = false;
-            canMove = false;
-            foreach (var b in buttons)
-            {
-                b.interactable = false;
-            }
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-        }
         else
         {
-            transform.rotation = targetRotation;
-            if (canRotate == false && canMove == false)
+            if (MoveTowards())
             {
-                canRotate = true;
-                canMove = true;
-                foreach (var b in buttons)
+                transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            }
+            else
+            {
+                transform.position = targetPosition;
+            }
+        }
+
+        //transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+        if (!combat.inCombat)
+        { 
+            if (transform.rotation != targetRotation)
+            {
+                canRotate = false;
+                canMove = false;
+                UpdateButtons(false);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            }
+            else
+            {
+                transform.rotation = targetRotation;
+                if (canRotate == false && canMove == false)
                 {
-                    b.interactable = true;
+                    canRotate = true;
+                    canMove = true;
+                    UpdateButtons(true);
                 }
             }
         }
+        else
+        {
+            if (MoveTowards())
+            {
+                if (transform.rotation != targetRotation)
+                {
 
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    transform.rotation = targetRotation;
+                }
+            }
+        }
+    }
+
+    public void UpdateButtons(bool dis)
+    {
+        foreach (var b in buttons)
+        {
+            b.interactable = dis;
+        }
+    }
+
+    bool MoveTowards()
+    {
+        float dist = Vector3.Distance(targetPosition, transform.position);
+        return (dist > distanceThreshold);
     }
 
     public void Forward()
@@ -96,8 +135,10 @@ public class Movement : MonoBehaviour
                 {
                     targetPosition = wallCheck.position;
 
-                    anim.SetBool("isMoving", true);
+                    //anim.SetBool("isMoving", true);
                     anim.speed = 2;
+                    UpdateButtons(false);
+                    canMove = false;
                 }
             }
         }
