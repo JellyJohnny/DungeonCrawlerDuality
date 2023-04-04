@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PropSpawner : MonoBehaviour
 {
+    public static PropSpawner Instance;
     public GameObject enemyPrefab;
     public GameObject[] enemyRooms;
+    public GameObject[] enemies;
 
     public int enemyCount;
     Vector3 offset;
@@ -14,8 +16,10 @@ public class PropSpawner : MonoBehaviour
 
     private void Start()
     {
+        Instance = this;
         offset = new Vector3(0, -0.5f, 0);
         StartCoroutine(SetConditions());
+        enemies = new GameObject[enemyCount];
     }
 
     IEnumerator SetConditions()

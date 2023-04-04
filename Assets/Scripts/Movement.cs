@@ -7,108 +7,54 @@ using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
+    public AppleBaseState currentState;
+    public AppleIdleState idleState = new AppleIdleState();
+    public AppleMoveState moveState = new AppleMoveState();
+    public AppleTurnState turnState = new AppleTurnState();
+    public AppleAttackState attackState = new AppleAttackState();
+
     public float checkDistance;
     public bool canMove;
     public bool canRotate;
     public Quaternion targetRotation;
-    Vector3 targetPosition;
+    public Vector3 targetPosition;
     public float turnSpeed;
     public float moveSpeed;
     public Animator anim;
-    LayerMask playerLayer;
+    public LayerMask playerLayer;
     public Transform wallCheck;
     public float distanceThreshold;
     public Button[] buttons;
-    Combat combat;
+    public Button attackButton;
+    public int turnDirection;
+    public GameObject[] enemies;
+
+    public Enemy currentEnemy;
 
     private void Start()
     {
-        combat = GetComponent<Combat>();    
-        targetRotation = transform.rotation;
-        targetPosition = transform.position;
-        UpdateButtons(true);
+        currentState = idleState;
+        currentState.EnterState(this);
     }
     
     private void Update()
     {
-        Move();
+        if (currentEnemy != null)
+        {
+            Vector3 enemyDir = currentEnemy.transform.position - transform.position;
+            float enemyDist = Vector3.Distance(currentEnemy.transform.position, transform.position);
+
+            Debug.DrawRay(transform.position, enemyDir, Color.green);
+        }
+
+        
+        currentState.UpdateState(this);
     }
 
-    private void Move()
+    public void SwitchState(AppleBaseState state)
     {
-        if (!combat.inCombat)
-        {
-            if (MoveTowards())
-            {
-                UpdateButtons(false);
-
-                anim.speed = Mathf.Lerp(anim.speed, 0, moveSpeed * Time.deltaTime);
-                transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            }
-            else
-            {
-                canMove = true;
-                canRotate = true;
-                if (anim.GetBool("isMoving") != false)
-                {
-                    anim.SetBool("isMoving", false);
-
-                }
-                UpdateButtons(true);
-                transform.position = targetPosition;
-            }
-            //transform.position = targetPosition;
-        }
-
-        else
-        {
-            if (MoveTowards())
-            {
-                transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            }
-            else
-            {
-                transform.position = targetPosition;
-            }
-        }
-
-        //transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-        if (!combat.inCombat)
-        { 
-            if (transform.rotation != targetRotation)
-            {
-                canRotate = false;
-                canMove = false;
-                UpdateButtons(false);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-            }
-            else
-            {
-                transform.rotation = targetRotation;
-                if (canRotate == false && canMove == false)
-                {
-                    canRotate = true;
-                    canMove = true;
-                    UpdateButtons(true);
-                }
-            }
-        }
-        else
-        {
-            if (MoveTowards())
-            {
-                if (transform.rotation != targetRotation)
-                {
-
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-                }
-                else
-                {
-                    transform.rotation = targetRotation;
-                }
-            }
-        }
+        currentState = state;
+        state.EnterState(this);
     }
 
     public void UpdateButtons(bool dis)
@@ -119,7 +65,7 @@ public class Movement : MonoBehaviour
         }
     }
 
-    bool MoveTowards()
+    public bool MoveTowards()
     {
         float dist = Vector3.Distance(targetPosition, transform.position);
         return (dist > distanceThreshold);
@@ -127,21 +73,15 @@ public class Movement : MonoBehaviour
 
     public void Forward()
     {
-        if (canMove)
-        {
-            if (transform.position == targetPosition)
-            {
-                if (canMove && CheckObstructions() == false)
-                {
-                    targetPosition = wallCheck.position;
 
-                    //anim.SetBool("isMoving", true);
-                    anim.speed = 2;
-                    UpdateButtons(false);
-                    canMove = false;
-                }
+        //if (transform.position == targetPosition)
+        //{
+            if (canMove && CheckObstructions() == false)
+            {
+                SwitchState(moveState);
+                
             }
-        }
+        //}
     }
 
     bool CheckObstructions()
@@ -150,27 +90,34 @@ public class Movement : MonoBehaviour
         // Does the ray intersect any objects excluding the player layer
         return (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, checkDistance, ~playerLayer));
     }
-    
 
     public void TurnRight()
     {
+        turnDirection = 90;
         if (canRotate && canMove)
         {
-            Quaternion lr = transform.rotation * Quaternion.Euler(0,90,0);
-            targetRotation = lr;
-            anim.SetBool("isMoving", true);
+            SwitchState(turnState);
         }
     }
 
     public void TurnLeft()
     {
+        turnDirection = -90;
         if (canRotate && canMove)
         {
-            Quaternion lr = transform.rotation * Quaternion.Euler(0, -90, 0);
-            targetRotation = lr;
-            anim.SetBool("isMoving", true);
+            SwitchState(turnState);
         }
     }
+
+    public void AttackEnemy()
+    {
+        if(currentEnemy != null)
+        {
+            currentEnemy.TakeDamage(this);
+        }
+    }
+
+   
 
     void OnForward()
     {

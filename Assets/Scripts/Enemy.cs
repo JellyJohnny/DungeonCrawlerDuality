@@ -8,8 +8,9 @@ public class Enemy : MonoBehaviour
     public Transform target;
     public float turnSpeed;
     public bool targetLock;
-    GameObject player;
+    public GameObject player;
     public Animator anim;
+    public int health;
 
     private void Update()
     {
@@ -21,7 +22,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player")
@@ -31,10 +32,22 @@ public class Enemy : MonoBehaviour
             player.GetComponent<Combat>().EnterCombat(this.GetComponent<Enemy>(),transform.position);
         }
     }
+    */
 
-    public void TakeDamage()
+    public void TakeDamage(Movement m)
     {
-        anim.SetTrigger("takeDamage");
-        Debug.Log("enemy took damage");
+        health--;
+        if (health > 0)
+        {
+            anim.SetTrigger("takeDamage");
+            Debug.Log("enemy took damage");
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            m.currentEnemy = null;
+            m.SwitchState(m.idleState);
+            
+        }
     }
 }

@@ -435,11 +435,10 @@ GameObject:
   - component: {fileID: 7527888996434769897}
   - component: {fileID: 4124299821232225514}
   - component: {fileID: 8379650031575377451}
-  - component: {fileID: 595843207765950921}
   - component: {fileID: 8513896354542501289}
   - component: {fileID: 5252874195945966246}
   - component: {fileID: -6256178437482722694}
-  - component: {fileID: 3609710982530131696}
+  - component: {fileID: 1983071142415778507}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -514,20 +513,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &595843207765950921
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4078164528327924999}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8513896354542501289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,15 +529,23 @@ MonoBehaviour:
   canMove: 1
   canRotate: 0
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
   turnSpeed: 15
   moveSpeed: 8
   anim: {fileID: 334734308674140481}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
   wallCheck: {fileID: 134010273164895526}
   distanceThreshold: 0.1
   buttons:
   - {fileID: 1219794182336952491}
   - {fileID: 7111643254472510349}
   - {fileID: 6927341456460796190}
+  attackButton: {fileID: 532781221459058364}
+  turnDirection: 0
+  enemies: []
+  currentEnemy: {fileID: 0}
 --- !u!114 &5252874195945966246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +592,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &3609710982530131696
+--- !u!114 &1983071142415778507
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -608,18 +601,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4078164528327924999}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba122ebad8399042ab378ddf33bb791, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c8ebd73a4532d64f92d39c3617460c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inCombat: 0
-  attackButton: {fileID: 532781221459058364}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  currentEnemy: {fileID: 0}
 --- !u!1 &4121765892232954305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,8 +1472,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3609710982530131696}
-        m_TargetAssemblyTypeName: Combat, Assembly-CSharp
+      - m_Target: {fileID: 8513896354542501289}
+        m_TargetAssemblyTypeName: Movement, Assembly-CSharp
         m_MethodName: AttackEnemy
         m_Mode: 1
         m_Arguments:

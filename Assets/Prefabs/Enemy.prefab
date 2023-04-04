@@ -120,10 +120,10 @@ GameObject:
   - component: {fileID: 6411594380158058319}
   - component: {fileID: 4121616668805349267}
   - component: {fileID: 1539536573045107211}
-  - component: {fileID: 6261751263119968317}
+  - component: {fileID: 3583244992781940064}
   m_Layer: 6
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -255,8 +255,10 @@ MonoBehaviour:
   target: {fileID: 7527888996434769897, guid: c8e1f1d183acd7a4dbf5824e71e11657, type: 3}
   turnSpeed: 10
   targetLock: 0
+  player: {fileID: 0}
   anim: {fileID: 6761861949191732105}
---- !u!135 &6261751263119968317
+  health: 2
+--- !u!135 &3583244992781940064
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -267,7 +269,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 7
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3440532316051133994
 GameObject:

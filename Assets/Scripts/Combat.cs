@@ -66,7 +66,7 @@ public class Combat : MonoBehaviour
     {
         if(currentEnemy != null) 
         {
-            currentEnemy.TakeDamage();
+            //currentEnemy.TakeDamage();
         }
         
     }
