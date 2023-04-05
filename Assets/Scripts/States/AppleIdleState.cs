@@ -15,9 +15,10 @@ public class AppleIdleState : AppleBaseState
 
         m.anim.SetBool("isMoving", false);
         m.UpdateButtons(true);
-        m.attackButton.interactable = false;
+        
 
         m.attackButton.image.fillAmount = 1;
+        m.attackButton.interactable = false;
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (var e in enemies)

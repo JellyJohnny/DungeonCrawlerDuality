@@ -12,7 +12,11 @@ public class AppleAttackState : AppleBaseState
         m.canMove = false;
         Vector3 dir = m.currentEnemy.transform.position - m.transform.position;
         Quaternion lookR = Quaternion.LookRotation(dir);
+        lookR.x = 0f;
+        lookR.z = 0f;
         m.targetRotation = lookR;
+        m.currentEnemy.player = m.gameObject;
+        m.currentEnemy.targetLock = true;
     }
 
     public override void UpdateState(Movement m)

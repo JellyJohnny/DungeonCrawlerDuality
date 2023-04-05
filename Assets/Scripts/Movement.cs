@@ -21,6 +21,7 @@ public class Movement : MonoBehaviour
     public float turnSpeed;
     public float moveSpeed;
     public Animator anim;
+    public Animator swordAnim;
     public LayerMask playerLayer;
     public LayerMask wallLayer;
     public Transform wallCheck;
@@ -28,15 +29,26 @@ public class Movement : MonoBehaviour
     public Button[] buttons;
     public Button attackButton;
     public int turnDirection;
-    //public GameObject[] enemies;
+    public GameObject[] enemies;
     public float hitDist;
 
     public Enemy currentEnemy;
+
+    public GameObject missPrefab;
+    public GameObject damagePrefab;
+
+    public AudioSource aud;
+    public AudioSource uiAud;
+    public AudioClip[] footstepClips;
+    public AudioClip swordSound;
+    public AudioClip swordHit;
+    public float footStepDelay;
 
     private void Start()
     {
         currentState = idleState;
         currentState.EnterState(this);
+        aud = GetComponent  <AudioSource>();    
     }
     
     private void Update()
@@ -51,6 +63,20 @@ public class Movement : MonoBehaviour
 
         
         currentState.UpdateState(this);
+    }
+
+    public IEnumerator PlayFootStep()
+    {
+        while (currentState == moveState || currentState == turnState)
+        {
+            yield return new WaitForSeconds(footStepDelay);
+            int r = Random.Range(0, footstepClips.Length);
+
+            aud.clip = footstepClips[r];
+            aud.Play();
+            Debug.Log("footstep");
+        }
+        
     }
 
     public void SwitchState(AppleBaseState state)
@@ -95,6 +121,7 @@ public class Movement : MonoBehaviour
 
     public void TurnRight()
     {
+        
         turnDirection = 90;
         if (canRotate && canMove)
         {
@@ -104,6 +131,7 @@ public class Movement : MonoBehaviour
 
     public void TurnLeft()
     {
+        
         turnDirection = -90;
         if (canRotate && canMove)
         {
@@ -115,11 +143,22 @@ public class Movement : MonoBehaviour
     {
         if(currentEnemy != null)
         {
+            anim.SetTrigger("isAttacking");
+            swordAnim.SetTrigger("isAttacking");
             attackButton.interactable = false;
             attackButton.image.fillAmount = 0;
-            currentEnemy.TakeDamage(this);
+            StartCoroutine(PlaySwordSound());
         }
     }
+
+    IEnumerator PlaySwordSound()
+    {
+        aud.clip = swordSound;
+        yield return new WaitForSeconds(0.25f);
+        currentEnemy.TakeDamage(this, missPrefab, damagePrefab);
+        aud.Play();
+    }
+
    
 
     void OnForward()

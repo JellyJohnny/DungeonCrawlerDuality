@@ -1,4 +1,5 @@
 
+using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,7 +15,11 @@ public class AppleMoveState : AppleBaseState
         m.anim.speed = 2;
         m.UpdateButtons(false);
         m.canMove = false;
+        m.StartCoroutine(m.PlayFootStep());
+        m.uiAud.Play();
     }
+
+    
 
     public override void UpdateState(Movement m)
     {

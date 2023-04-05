@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 4121616668805349267}
   - component: {fileID: 1539536573045107211}
   - component: {fileID: 3583244992781940064}
+  - component: {fileID: 5505521178007166033}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
@@ -258,6 +259,15 @@ MonoBehaviour:
   player: {fileID: 0}
   anim: {fileID: 6761861949191732105}
   health: 2
+  swordHit: {fileID: 8300000, guid: 0d6472d0e993bce4b896cc965a85d1d5, type: 3}
+  miss: {fileID: 8300000, guid: da60c06deec0945408d02f141ee0af16, type: 3}
+  death: {fileID: 8300000, guid: c037edbf2644c764db216e375a2999db, type: 3}
+  deathMessage:
+  - The bat was days from retirement.
+  - The bat's children will miss him dearly.
+  - The bat's entire life was this dungeon.
+  - It's final moments were filled with regret.
+  - It never even felt true love...
 --- !u!135 &3583244992781940064
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -271,6 +281,102 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!82 &5505521178007166033
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2920574834202077422}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3440532316051133994
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,7 +639,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca3bfd520d5890d42a121df4de9f8aa1, type: 2}
+  - {fileID: 2100000, guid: 54ccf01af08041641856e940206fef1c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1483,7 +1589,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca3bfd520d5890d42a121df4de9f8aa1, type: 2}
+  - {fileID: 2100000, guid: 54ccf01af08041641856e940206fef1c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3760,7 +3866,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca3bfd520d5890d42a121df4de9f8aa1, type: 2}
+  - {fileID: 2100000, guid: 54ccf01af08041641856e940206fef1c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

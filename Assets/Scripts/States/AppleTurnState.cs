@@ -19,6 +19,8 @@ public class AppleTurnState : AppleBaseState
 
         Quaternion lr = m.transform.rotation * Quaternion.Euler(0, m.turnDirection, 0);
         m.targetRotation = lr;
+        m.StartCoroutine(m.PlayFootStep());
+        m.uiAud.Play();
     }
 
     public override void UpdateState(Movement m)
