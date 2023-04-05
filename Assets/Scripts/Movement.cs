@@ -22,12 +22,14 @@ public class Movement : MonoBehaviour
     public float moveSpeed;
     public Animator anim;
     public LayerMask playerLayer;
+    public LayerMask wallLayer;
     public Transform wallCheck;
     public float distanceThreshold;
     public Button[] buttons;
     public Button attackButton;
     public int turnDirection;
-    public GameObject[] enemies;
+    //public GameObject[] enemies;
+    public float hitDist;
 
     public Enemy currentEnemy;
 
@@ -113,10 +115,11 @@ public class Movement : MonoBehaviour
     {
         if(currentEnemy != null)
         {
+            attackButton.interactable = false;
+            attackButton.image.fillAmount = 0;
             currentEnemy.TakeDamage(this);
         }
     }
-
    
 
     void OnForward()

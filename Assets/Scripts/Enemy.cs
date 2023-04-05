@@ -46,7 +46,6 @@ public class Enemy : MonoBehaviour
         {
             Destroy(this.gameObject);
             m.currentEnemy = null;
-            m.SwitchState(m.idleState);
             
         }
     }

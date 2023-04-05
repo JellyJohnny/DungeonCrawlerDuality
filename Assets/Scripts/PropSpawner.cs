@@ -7,9 +7,10 @@ public class PropSpawner : MonoBehaviour
     public static PropSpawner Instance;
     public GameObject enemyPrefab;
     public GameObject[] enemyRooms;
+    public int enemyCount;
     public GameObject[] enemies;
 
-    public int enemyCount;
+    
     Vector3 offset;
 
     Quaternion lookRot;
@@ -18,8 +19,8 @@ public class PropSpawner : MonoBehaviour
     {
         Instance = this;
         offset = new Vector3(0, -0.5f, 0);
-        StartCoroutine(SetConditions());
         enemies = new GameObject[enemyCount];
+        StartCoroutine(SetConditions());
     }
 
     IEnumerator SetConditions()
@@ -36,18 +37,17 @@ public class PropSpawner : MonoBehaviour
             Vector3 currentRoomPos  = RoomSpawner.Instance.rPos[i];
             Vector3 prevRoomDirection = prevRoomPos - currentRoomPos;
 
-
-
             lookRot = Quaternion.LookRotation(prevRoomDirection);
 
-            if(enemyCount > 0)
-            {
-                int randomInt = Random.Range(1, enemyRooms.Length - 1);
-
-                Instantiate(enemyPrefab, RoomSpawner.Instance.rPos[randomInt] + offset, lookRot);
-                enemyCount--;
-            }
         }
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            int randomInt = Random.Range(1, enemyRooms.Length - 1);
+
+            Instantiate(enemyPrefab, RoomSpawner.Instance.rPos[randomInt] + offset, lookRot);
+        }
+
     }
 
 }
