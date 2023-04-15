@@ -8,22 +8,16 @@ public class RoomSpawner : MonoBehaviour
 {
     public static RoomSpawner Instance;
     public int count;
-    //public GameObject room;
-
     Vector3[] dirs;
     public Vector3[] rPos;
     public Vector3 checkPos;
     Vector3 prevPos;
     bool contains;
-
-    //public GameObject deadEnd;
     public GameObject entrance;
     public GameObject destination;
     public GameObject hallway;
     public GameObject[] corners;
-
     GameObject newRoom;
-
     public GameObject[] rooms;
     public int cornerCount;
     int randDirIndex;
@@ -43,46 +37,33 @@ public class RoomSpawner : MonoBehaviour
         randomDirectionsIndex = new int[count];
         rPos = new Vector3[count];
         SpawnRooms();
-        
     }
-
-
 
     void SpawnRooms()
     {
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) //for each room...
         {
-            /*
-            do
-            {
-                randDirIndex = Random.Range(0, dirs.Length);
-                
-                checkPos = prevPos + dirs[randDirIndex];
-            } while (CheckArray(checkPos));
-            */
-
             int l = 0;
             int maxLoops = 10000;
-            while (CheckArray(checkPos) && l < maxLoops)
+            while (CheckArray(checkPos) && l < maxLoops)//check if position is already taken by a room
             {
                 l++;
-                //do something else
-                randDirIndex = Random.Range(0, dirs.Length);
+                randDirIndex = Random.Range(0, dirs.Length); //choose one of 4 random directions
 
-                checkPos = prevPos + dirs[randDirIndex];
+                checkPos = prevPos + dirs[randDirIndex]; //store the position for future use
             }
 
             randomDirectionsIndex[i] = randDirIndex;
-            GameObject newRoomObj = Instantiate(newRoom, checkPos, Quaternion.identity);
+            GameObject newRoomObj = Instantiate(newRoom, checkPos, Quaternion.identity); //create the room at the checked position
             rooms[i] = newRoomObj;
-            rPos[i] = checkPos;
+            rPos[i] = checkPos; //add position to array
             prevPos = checkPos;
         }
 
         ModifyRooms();
     }
 
-    bool CheckArray(Vector3 p)
+    bool CheckArray(Vector3 p) //this function checks an array of positions and returns true or false
     {
         contains = false;
         for (int i = 0; i < rPos.Length; i++)
@@ -95,7 +76,7 @@ public class RoomSpawner : MonoBehaviour
         return contains;
     }
 
-    void ModifyRooms()
+    void ModifyRooms() //this function's sole purpose is to change all of the rooms to make them align properly
     {
         rooms[0].SetActive(false);
         Vector3 ang = rPos[1] - rPos[0];
@@ -195,7 +176,7 @@ public class RoomSpawner : MonoBehaviour
                 rooms[i].transform.rotation = r3;
             }
         }
-        SpawnPlayer(rPos[0],r);
+        SpawnPlayer(rPos[0],r); //spawn the player at the first room
     }
 
     void SpawnPlayer(Vector3 p,Quaternion q)

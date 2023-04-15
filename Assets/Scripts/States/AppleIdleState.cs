@@ -9,13 +9,15 @@ public class AppleIdleState : AppleBaseState
     public override void EnterState(Movement m)
     {
         
-        Debug.Log("idle");
+
         m.canMove = true;
         m.canRotate = true;
 
         m.anim.SetBool("isMoving", false);
         m.UpdateButtons(true);
-        
+
+        m.deathScreen.SetActive(false);
+
 
         m.attackButton.image.fillAmount = 1;
         m.attackButton.interactable = false;
@@ -40,30 +42,13 @@ public class AppleIdleState : AppleBaseState
             m.SwitchState(m.attackState);
         }
 
-        /*
-        for (int i = 0; i < PropSpawner.Instance.enemyCount-1; i++)
-        {
-            RaycastHit hit;
-            Vector3 dir = PropSpawner.Instance.enemies[i].transform.position - m.transform.position;
-
-            if (Physics.Raycast(m.transform.position, dir, out hit, Mathf.Infinity, ~m.playerLayer))
-            {
-                if (hit.distance <= 6)
-                {
-                    m.currentEnemy = PropSpawner.Instance.enemies[i].GetComponent<Enemy>();
-                    Debug.DrawRay(m.transform.position, dir * hit.distance, Color.yellow);
-                    Debug.Log("Did Hit");
-                    break;
-                }
-            }
-        }
-        */
+        
 
     }
 
     public override void UpdateState(Movement m)
     {
-       
+
     }
 
     

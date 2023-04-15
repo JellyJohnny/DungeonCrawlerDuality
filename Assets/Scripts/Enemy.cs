@@ -19,14 +19,20 @@ public class Enemy : MonoBehaviour
     AudioSource aud;
     public string[] deathMessage;
 
+    //highlight tests
+    public Mesh mesh;
+    public Material material;
+
     private void Start()
     {
         aud = GetComponent<AudioSource>();  
+
     }
 
     private void Update()
     {
-        if(targetLock && player != null)
+        Graphics.DrawMesh(mesh, Vector3.zero, Quaternion.identity, material, 0);
+        if (targetLock && player != null)
         {
             Vector3 dir = player.transform.position - transform.position;
             Quaternion lookRot = Quaternion.LookRotation(dir);
@@ -48,7 +54,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(Movement m,GameObject missPrefab,GameObject damagePrefab)
     {
-
+        StartCoroutine(AttackPlayer(m));
         //choose miss prefab or damage prefab
         int r = Random.Range(0, 2);
 
@@ -93,6 +99,17 @@ public class Enemy : MonoBehaviour
         
 
         
+    }
+
+    public IEnumerator AttackPlayer(Movement m)
+    {
+        anim.SetTrigger("isAttacking");
+        yield return new WaitForSeconds(1f);
+
+        if (health > 0)
+        {
+            m.TakeDamage();
+        }
     }
 
    IEnumerator RemoveEnemy()

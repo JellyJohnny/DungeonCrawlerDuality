@@ -8,7 +8,6 @@ public class AppleMoveState : AppleBaseState
 {
     public override void EnterState(Movement m)
     {
-        Debug.Log("move");
 
         m.anim.SetBool("isMoving", true);
         m.targetPosition = m.wallCheck.position;

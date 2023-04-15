@@ -6,11 +6,11 @@ public class Treasure : MonoBehaviour
 {
     public Animator anim;
 
-    private void OnTriggerEnter(Collider other)
+
+    public void OpenChest()
     {
-        if(other.gameObject.tag == "Player")
-        {
-            anim.SetBool("isOpen", true);
-        }
+        anim.SetBool("isOpen", true);
+        Movement.Instance.SwitchState(Movement.Instance.winState);
     }
+
 }
